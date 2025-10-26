@@ -38,10 +38,14 @@ xg_model_pipe.fit(train_topics, train_qrels, validation_topics, validation_qrels
 rankers.append(xg_model_pipe)
 
 # evaluate the full (4 features) model, as well as the each model containing only 3 features)
-pt.Experiment(
+eval= pt.Experiment(
     rankers,
     validation_topics,
     validation_qrels,
     metrics=["map","recip_rank","P_5","R_5"],
     names=["Full Model"]  + ["Full Minus %d" % fid for fid in range(numf)]
 )
+
+eval_results = eval.run()
+
+print(pd.DataFrame(eval_results))
