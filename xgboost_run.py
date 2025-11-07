@@ -11,11 +11,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 pt.init()
 ds = pt.get_dataset("irds:disks45/nocr/trec-robust-2004")
 
-INDEX_DIR = r"C:\Users\paulj\OneDrive\Desktop\InfoRetrival\InformationRetrival\index"
+INDEX_DIR = r"C:\Users\paulj\OneDrive\Desktop\InfoRetrival\index"
 os.makedirs(INDEX_DIR, exist_ok=True)
 
 index_ref = pt.IndexRef.of(INDEX_DIR)
-
 
 topics = ds.get_topics().rename(columns={"title": "query"})
 topics["query"] = topics["query"].apply(lambda x: re.sub(r'[^A-Za-z0-9 ]+', ' ', x))
@@ -69,7 +68,7 @@ results.to_csv("ltr_results.csv", index=False)
 
 print(results.head(10))
 
-#trained_model = ltr_pipeline[-1].learner
+trained_model = ltr_pipeline[-1].learner
 
 
 evalution = pt.Experiment([ltr_pipeline],valid_topics,valid_qrels, eval_metrics=["map", "ndcg_cut_10"])
